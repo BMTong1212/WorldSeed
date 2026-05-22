@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorldSeed Curriculum Fit Assessment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#f7f6f2;--surf:#f9f8f5;--surf2:#fbfbf9;--surfoff:#f3f0ec;--surfdyn:#e6e4df;
+  --div:#dcd9d5;--bor:#d4d1ca;
+  --tx:#28251d;--txm:#7a7974;--txf:#bab9b4;
+  --pr:#01696f;--prh:#0c4e54;--pra:#0f3638;--prhi:#cedcd8;
+  --rsm:.375rem;--rmd:.5rem;--rlg:.75rem;--rxl:1rem;--rfull:9999px;
+  --sh1:0 1px 2px rgba(40,37,29,.06);--sh2:0 4px 12px rgba(40,37,29,.09);
+  --tr:180ms cubic-bezier(.16,1,.3,1);
+  --fd:"Instrument Serif",Georgia,serif;--fb:"Work Sans","Helvetica Neue",sans-serif;
+  --txs:clamp(.75rem,.7rem + .25vw,.875rem);--txsm:clamp(.875rem,.8rem + .35vw,1rem);
+  --txb:clamp(1rem,.95rem + .25vw,1.125rem);--txl:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --txxl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);--tx2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+}
+[data-theme="dark"]{
+  --bg:#171614;--surf:#1c1b19;--surf2:#201f1d;--surfoff:#1d1c1a;--surfdyn:#2d2c2a;
+  --div:#262523;--bor:#393836;
+  --tx:#cdccca;--txm:#797876;--txf:#5a5957;
+  --pr:#4f98a3;--prh:#227f8b;--pra:#1a626b;--prhi:#313b3b;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{min-height:100dvh;line-height:1.6;font-family:var(--fb);font-size:var(--txb);color:var(--tx);background:var(--bg);transition:background .2s,color .2s}
+button{cursor:pointer;background:none;border:none;font:inherit;color:inherit}
+h1,h2,h3,h4{text-wrap:balance;line-height:1.2}
+:focus-visible{outline:2px solid var(--pr);outline-offset:3px;border-radius:var(--rsm)}
+@media(prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+.hdr{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--div);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.hdr-logo-container {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--bor);
+  flex-shrink: 0;
+  background: #fff;
+}
+.hdr-logo-val {
+  position: absolute;
+  left: -5%;
+  top: -5%;
+  width: 125%;
+  height: 125%;
+  object-fit: cover;
+  object-position: left center;
+}
+[data-theme="dark"] .hdr-logo-val {
+  filter: invert(1) hue-rotate(180deg);
+}
+.brand-hero {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+.brand-hero-img {
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+  display: inline-block;
+  mix-blend-mode: multiply;
+}
+[data-theme="dark"] .brand-hero-img {
+  filter: invert(1) contrast(1.2);
+  mix-blend-mode: screen;
+}
+.hdr-title{font-family:var(--fd);font-size:var(--txl);letter-spacing:-.01em}
+.hdr-sub{font-size:var(--txs);color:var(--txm);margin-top:1px}
+.theme-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:var(--rfull);border:1px solid var(--bor);color:var(--txm);transition:all var(--tr);flex-shrink:0}
+.theme-btn:hover{color:var(--tx);border-color:var(--txm);background:var(--surfoff)}
+.wrap{max-width:740px;margin:0 auto;padding:2rem 1.25rem 5rem}
+.prog-track{background:var(--surfdyn);border-radius:var(--rfull);height:5px;margin-bottom:.5rem;overflow:hidden}
+.prog-fill{height:100%;background:var(--pr);border-radius:var(--rfull);transition:width .45s cubic-bezier(.16,1,.3,1);width:12%}
+.prog-meta{display:flex;justify-content:space-between;font-size:var(--txs);color:var(--txm);margin-bottom:2rem}
+.step{display:none}
+.step.active{display:block}
+.step-icon{font-size:2rem;margin-bottom:.5rem}
+.step-title{font-family:var(--fd);font-size:var(--txxl);margin-bottom:.375rem;color:var(--tx)}
+.step-desc{color:var(--txm);font-size:var(--txsm);margin-bottom:1.75rem;max-width:60ch}
+.field-block{margin-bottom:1.5rem}
+.field-lbl{font-size:var(--txsm);font-weight:600;color:var(--tx);margin-bottom:.375rem;display:block}
+.field-hint{font-size:var(--txs);color:var(--txm);margin-bottom:.5rem}
+.txt-inp{width:100%;padding:.625rem .875rem;background:var(--surf);border:1.5px solid var(--bor);border-radius:var(--rmd);font:inherit;font-size:var(--txsm);color:var(--tx);transition:border-color var(--tr)}
+.txt-inp:focus{outline:none;border-color:var(--pr);background:var(--surf2)}
+.opts{display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem}
+.ocard{position:relative}
+.ocard input{position:absolute;opacity:0;width:0;height:0}
+.olbl{display:flex;align-items:flex-start;gap:.875rem;padding:.875rem 1rem;background:var(--surf);border:1.5px solid var(--bor);border-radius:var(--rlg);cursor:pointer;transition:border-color var(--tr),background var(--tr),box-shadow var(--tr)}
+.olbl:hover{border-color:var(--pr);background:var(--surf2);box-shadow:var(--sh1)}
+.ocard input:checked + .olbl{border-color:var(--pr);background:var(--prhi);box-shadow:var(--sh2)}
+.ochk{width:20px;height:20px;border:2px solid var(--bor);border-radius:var(--rsm);background:var(--surf2);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
+.ocard input[type=radio] + .olbl .ochk{border-radius:50%}
+.ocard input:checked + .olbl .ochk{background:var(--pr);border-color:var(--pr)}
+.ocard input[type=radio]:checked + .olbl .ochk::after{content:"";width:7px;height:7px;background:#fff;border-radius:50%;display:block}
+.ocard input[type=checkbox]:checked + .olbl .ochk::after{content:"\2713";color:#fff;font-size:.7rem;font-weight:700;line-height:1}
+.obody{flex:1;min-width:0}
+.omain{font-size:var(--txsm);font-weight:600;color:var(--tx);margin-bottom:.2rem;line-height:1.35}
+.oex{font-size:var(--txs);color:var(--txm);line-height:1.55;margin-top:.2rem}
+.nav{display:flex;gap:.75rem;margin-top:2rem;align-items:center}
+.btn-back{padding:.625rem 1.25rem;border:1.5px solid var(--bor);border-radius:var(--rmd);color:var(--txm);font-size:var(--txsm);font-weight:500;background:var(--surf);transition:all var(--tr)}
+.btn-back:hover{border-color:var(--txm);color:var(--tx)}
+.btn-next{padding:.625rem 1.5rem;background:var(--pr);color:#fff;border-radius:var(--rmd);font-size:var(--txsm);font-weight:600;transition:background var(--tr);margin-left:auto}
+.btn-next:hover{background:var(--prh)}
+#results{display:none}
+.res-hero{text-align:center;padding:2.5rem 1rem 2rem;border-bottom:1px solid var(--div);margin-bottom:2rem}
+.res-hero h2{font-family:var(--fd);font-size:var(--tx2xl);color:var(--tx);margin-bottom:.375rem}
+.res-hero p{color:var(--txm);font-size:var(--txsm);margin:0 auto;max-width:52ch}
+.sec-head{font-family:var(--fd);font-size:var(--txxl);color:var(--tx);margin:2.5rem 0 1rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem}
+.chip{display:inline-flex;align-items:center;gap:.375rem;padding:.3rem .75rem;background:var(--surfoff);border:1px solid var(--bor);border-radius:var(--rfull);font-size:var(--txs);color:var(--txm)}
+.summary-box{background:var(--surf);border:1px solid var(--bor);border-radius:var(--rxl);padding:1.25rem 1.5rem;margin-bottom:2rem;font-size:var(--txsm);color:var(--txm);line-height:1.7}
+.cur-cards{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr));margin-bottom:2rem}
+.ccard{background:var(--surf);border:1.5px solid var(--bor);border-radius:var(--rxl);padding:1.25rem}
+.ccard:first-child{border-color:var(--pr);box-shadow:var(--sh2)}
+.crank{font-size:var(--txs);font-weight:700;color:var(--pr);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.375rem}
+.cname{font-family:var(--fd);font-size:var(--txl);color:var(--tx);margin-bottom:.5rem}
+.cscore{font-size:var(--txs);color:var(--txm);margin-bottom:.5rem}
+.cbar{height:4px;background:var(--surfdyn);border-radius:var(--rfull);margin-bottom:.75rem;overflow:hidden}
+.cbar-fill{height:100%;background:var(--pr);border-radius:var(--rfull)}
+.cdesc{font-size:var(--txs);color:var(--txm);margin-bottom:.75rem;line-height:1.6}
+.ctags{display:flex;flex-wrap:wrap;gap:.375rem;margin-bottom:.625rem}
+.ctag{background:var(--surfoff);border-radius:var(--rfull);padding:.15rem .6rem;font-size:var(--txs);color:var(--txm)}
+.cprog{font-size:var(--txs);color:var(--txm)}
+.cprog strong{color:var(--tx)}
+.exec-grid{display:grid;gap:.75rem;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));margin-bottom:2rem}
+.eitem{background:var(--surf);border:1px solid var(--bor);border-radius:var(--rlg);padding:1rem}
+.elbl{font-size:var(--txs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--pr);margin-bottom:.3rem}
+.eval{font-size:var(--txsm);color:var(--tx);font-weight:500}
+.esub{font-size:var(--txs);color:var(--txm);margin-top:.125rem}
+.aid-grid{display:grid;gap:.75rem;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));margin-bottom:2.5rem}
+.acard{background:var(--surf);border:1px solid var(--bor);border-radius:var(--rlg);padding:1rem 1.25rem}
+.acat{font-size:var(--txs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--pr);margin-bottom:.5rem}
+.alist{list-style:none;display:flex;flex-direction:column;gap:.3rem}
+.alist li{font-size:var(--txs);color:var(--txm);padding-left:1em;position:relative}
+.alist li::before{content:"\00B7";position:absolute;left:0;color:var(--pr);font-weight:700;font-size:1.2em;line-height:1.2}
+.email-box {
+  background: var(--surf2);
+  border: 1.5px dashed var(--pr);
+  border-radius: var(--rxl);
+  padding: 1.5rem;
+  margin: 2.5rem 0 2rem;
+  box-shadow: var(--sh1);
+  transition: all var(--tr);
+}
+.email-box:hover {
+  box-shadow: var(--sh2);
+  border-style: solid;
+}
+.email-title {
+  font-family: var(--fd);
+  font-size: var(--txl);
+  color: var(--pr);
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.email-desc {
+  font-size: var(--txs);
+  color: var(--txm);
+  margin-bottom: 1.25rem;
+}
+.email-form {
+  display: flex;
+  gap: 0.75rem;
+}
+.email-input {
+  flex: 1;
+}
+.btn-email {
+  padding: 0.625rem 1.5rem;
+  background: var(--pr);
+  color: #fff;
+  border-radius: var(--rmd);
+  font-size: var(--txsm);
+  font-weight: 600;
+  transition: all var(--tr);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+.btn-email:hover {
+  background: var(--prh);
+  transform: translateY(-1px);
+}
+.btn-email:active {
+  background: var(--pra);
+  transform: translateY(0);
+}
+.email-status {
+  font-size: var(--txs);
+  margin-top: 0.75rem;
+  transition: all var(--tr);
+}
+.email-status.success {
+  color: #0d9488;
+}
+.email-status.error {
+  color: #e11d48;
+}
+.res-actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--div)}
+.btn-print{padding:.625rem 1.25rem;border:1.5px solid var(--bor);border-radius:var(--rmd);font-size:var(--txsm);font-weight:500;color:var(--txm);transition:all var(--tr)}
+.btn-print:hover{border-color:var(--pr);color:var(--pr)}
+.btn-restart{padding:.625rem 1.5rem;background:var(--pr);color:#fff;border-radius:var(--rmd);font-size:var(--txsm);font-weight:600;transition:background var(--tr)}
+.btn-restart:hover{background:var(--prh)}
+@media(max-width:600px){.hdr{padding:.625rem 1rem}.wrap{padding:1.5rem .875rem 4rem}.btn-next{margin-left:0;width:100%}.nav{flex-wrap:wrap}}
+@media print{.hdr,.prog-track,.prog-meta,.nav,.res-actions,.email-box{display:none!important}#results{display:block!important}#assessment{display:none!important}}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="hdr-brand">
+    <div class="hdr-logo-container">
+      <img src="worldseed-logo.jpg" class="hdr-logo-val" alt="WorldSeed Logo">
+    </div>
+    <div>
+      <div class="hdr-title">WorldSeed</div>
+      <div class="hdr-sub">Curriculum Fit Assessment</div>
+    </div>
+  </div>
+  <button class="theme-btn" id="themeBtn" aria-label="Toggle dark mode">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</header>
+
+<div id="assessment">
+<div class="wrap">
+  <div class="prog-track"><div class="prog-fill" id="progBar"></div></div>
+  <div class="prog-meta"><span id="stepInd">Step 1 of 8</span><span id="stepPct">12%</span></div>
+
+  <!-- STEP 1 -->
+  <section class="step active" id="step1">
+    <div class="brand-hero">
+      <img src="worldseed-logo.jpg" class="brand-hero-img" alt="WorldSeed Logo">
+    </div>
+    <div class="step-icon">&#127807;</div>
+    <h2 class="step-title">Tell us about your child</h2>
+    <p class="step-desc">Basic info helps us tailor the recommendation to the right developmental stage.</p>
+    <div class="field-block">
+      <label class="field-lbl" for="childName">Child&#39;s name or nickname</label>
+      <input class="txt-inp" id="childName" type="text" placeholder="e.g. Sofia, Elijah, Mia&#8230;">
+    </div>
+    <div class="field-block">
+      <label class="field-lbl">Age group</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="ageGroup" id="a1" value="early"><label class="olbl" for="a1"><span class="ochk"></span><span class="obody"><span class="omain">Early Childhood &#8212; Ages 3 to 6</span><span class="oex">Still in the world of imaginative play, sensory exploration, and oral language. Learns through doing, touching, singing, and pretending.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="ageGroup" id="a2" value="lower"><label class="olbl" for="a2"><span class="ochk"></span><span class="obody"><span class="omain">Lower Elementary &#8212; Ages 7 to 10</span><span class="oex">Beginning to read independently, curious about how things work, loves collecting facts and connecting ideas. Phonics clicking into place.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="ageGroup" id="a3" value="upper"><label class="olbl" for="a3"><span class="ochk"></span><span class="obody"><span class="omain">Upper Elementary &#8212; Ages 11 to 13</span><span class="oex">Developing abstract thinking, starting to care deeply about fairness and belonging, enjoys debate and multi-week research projects.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="ageGroup" id="a4" value="secondary"><label class="olbl" for="a4"><span class="ochk"></span><span class="obody"><span class="omain">Secondary &#8212; Ages 14 to 17</span><span class="oex">Ready for thesis writing, dual enrollment, vocational pathways, or real-world projects. Forming a personal worldview and identity.</span></span></label></div>
+      </div>
+    </div>
+    <div class="field-block">
+      <label class="field-lbl">Gender</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="gender" id="g1" value="girl"><label class="olbl" for="g1"><span class="ochk"></span><span class="obody"><span class="omain">Girl</span></span></label></div>
+        <div class="ocard"><input type="radio" name="gender" id="g2" value="boy"><label class="olbl" for="g2"><span class="ochk"></span><span class="obody"><span class="omain">Boy</span></span></label></div>
+        <div class="ocard"><input type="radio" name="gender" id="g3" value="other"><label class="olbl" for="g3"><span class="ochk"></span><span class="obody"><span class="omain">Prefer not to specify</span></span></label></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step" id="step2">
+    <div class="step-icon">&#9889;</div>
+    <h2 class="step-title">Energy &amp; body needs</h2>
+    <p class="step-desc">Think about a typical school morning. Which picture fits best?</p>
+    <div class="field-block">
+      <label class="field-lbl">Physical energy during learning time</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="energy" id="e1" value="high"><label class="olbl" for="e1"><span class="ochk"></span><span class="obody"><span class="omain">Can&#39;t stay in a chair for more than 10 minutes</span><span class="oex">Gets up to pace, sits on the floor, bounces a knee, or insists on doing math problems standing up. Learns better when the body is moving. Read-alouds work best during a walk or while drawing.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="energy" id="e2" value="medium"><label class="olbl" for="e2"><span class="ochk"></span><span class="obody"><span class="omain">Active in bursts, calm when genuinely engaged</span><span class="oex">Restless during transitions or tedious tasks, but settles into focused work once interested. A 5-minute movement break between subjects is enough to reset. Can sit for 20&#8211;30 minutes on something they care about.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="energy" id="e3" value="low"><label class="olbl" for="e3"><span class="ochk"></span><span class="obody"><span class="omain">Prefers to sit, observe, and think before acting</span><span class="oex">Comfortable working at a desk for long stretches. Often chooses reading, drawing, or quiet building over running. Needs processing time before answering &#8212; hates being called on suddenly.</span></span></label></div>
+      </div>
+    </div>
+    <div class="field-block">
+      <label class="field-lbl">Reaction to change, surprises, or new environments</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="adaptability" id="ad1" value="high"><label class="olbl" for="ad1"><span class="ochk"></span><span class="obody"><span class="omain">Jumps right in &#8212; loves surprises and plan changes</span><span class="oex">&#8220;Can we do something different today?&#8221; is a daily request. Visiting a new co-op or rearranging the schedule produces excitement, not anxiety. Transitions feel like adventure.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="adaptability" id="ad2" value="medium"><label class="olbl" for="ad2"><span class="ochk"></span><span class="obody"><span class="omain">Needs a brief heads-up, then adjusts well</span><span class="oex">A 5-minute warning (&#8220;we&#39;re switching to math after this&#8221;) or a posted visual schedule helps enormously. Handles change fine once prepared &#8212; but being caught off-guard causes irritability that takes 10&#8211;15 minutes to resolve.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="adaptability" id="ad3" value="low"><label class="olbl" for="ad3"><span class="ochk"></span><span class="obody"><span class="omain">Thrives on routine &#8212; any change causes real distress</span><span class="oex">Cancelling an activity, a different seat, or a substitute teacher leads to a meltdown or prolonged shutdown. The daily schedule is not a preference &#8212; it is a genuine emotional need. Predictability is the foundation everything else rests on.</span></span></label></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step" id="step3">
+    <div class="step-icon">&#129504;</div>
+    <h2 class="step-title">Temperament &amp; drive</h2>
+    <p class="step-desc">Think about what you observe when your child hits a hard problem or has to wait for help.</p>
+    <div class="field-block">
+      <label class="field-lbl">Persistence when something is genuinely difficult</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="persistence" id="p1" value="high"><label class="olbl" for="p1"><span class="ochk"></span><span class="obody"><span class="omain">Digs in harder when frustrated &#8212; won&#39;t let it go</span><span class="oex">Spends 45 minutes rebuilding the same LEGO structure that keeps collapsing, without being asked to keep going. Tears up but returns to the puzzle the next morning. Failure activates determination, not avoidance.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="persistence" id="p2" value="medium"><label class="olbl" for="p2"><span class="ochk"></span><span class="obody"><span class="omain">Tries for a while, then needs encouragement to continue</span><span class="oex">Makes a solid 10&#8211;15 minute effort, then looks up with &#8220;I can&#39;t do this.&#8221; A brief pep talk, a hint, or a small success nearby restores the effort. Doesn&#39;t spiral &#8212; just needs a nudge back into the work.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="persistence" id="p3" value="low"><label class="olbl" for="p3"><span class="ochk"></span><span class="obody"><span class="omain">One wrong answer closes the book &#8212; shuts down quickly</span><span class="oex">A single mistake can end the lesson. May cry, declare &#8220;I&#39;m bad at this,&#8221; and refuse to reopen the workbook without significant coaxing. Needs very short tasks, frequent visible wins, and encouragement woven into every session.</span></span></label></div>
+      </div>
+    </div>
+    <div class="field-block">
+      <label class="field-lbl">Social orientation during learning</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="social" id="s1" value="social"><label class="olbl" for="s1"><span class="ochk"></span><span class="obody"><span class="omain">Lights up around peers &#8212; learns best in groups</span><span class="oex">&#8220;Who else is coming?&#8221; is the first question every morning. Presentations, co-op classes, and group projects produce the best work. Solo seat work feels like punishment and produces the least output.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="social" id="s2" value="mixed"><label class="olbl" for="s2"><span class="ochk"></span><span class="obody"><span class="omain">Enjoys both group activities and solo deep-dives</span><span class="oex">Happy to join a co-op twice a week but also spends an hour alone reading or building without complaint. Neither drains nor restores in an extreme way &#8212; genuinely balanced between people and solitude.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="social" id="s3" value="solo"><label class="olbl" for="s3"><span class="ochk"></span><span class="obody"><span class="omain">Thinks and works best alone &#8212; groups feel overwhelming</span><span class="oex">Group activities produce surface-level participation, but solo projects reveal genuine depth and creativity. After a co-op day, needs 2+ hours of quiet decompression. Peer discussion often feels like interruption rather than enrichment.</span></span></label></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step" id="step4">
+    <div class="step-icon">&#127912;</div>
+    <h2 class="step-title">How your child takes in new information</h2>
+    <p class="step-desc">Think about the last time they learned something new and it actually stuck. How did it happen?</p>
+    <div class="field-block">
+      <label class="field-lbl">Primary learning modality</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="modality" id="m1" value="visual"><label class="olbl" for="m1"><span class="ochk"></span><span class="obody"><span class="omain">Visual &#8212; &#8220;Can you draw it for me?&#8221;</span><span class="oex">Remembers things seen, not things heard. Draws pictures to understand a story. Creates color-coded notes and elaborate mind maps without being asked. Loses track of verbal-only instructions after more than two steps.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="modality" id="m2" value="auditory"><label class="olbl" for="m2"><span class="ochk"></span><span class="obody"><span class="omain">Auditory &#8212; loves to talk through ideas and listen deeply</span><span class="oex">Can retell a 5-minute story in accurate detail after one listen. Reads aloud to themselves during solo work. Asks &#8220;can you explain it again?&#8221; and genuinely means it. Music and rhyme make memorization dramatically easier. Struggles to learn by reading silently.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="modality" id="m3" value="kinesthetic"><label class="olbl" for="m3"><span class="ochk"></span><span class="obody"><span class="omain">Kinesthetic &#8212; &#8220;Let me try it myself&#8221;</span><span class="oex">Only understood multiplication after physically arranging objects into groups. Learns to cook by cooking, not by reading the recipe. Takes things apart to see how they work. Workbook problems feel meaningless &#8212; real hands-on projects feel alive and produce the best retention.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="modality" id="m4" value="reading"><label class="olbl" for="m4"><span class="ochk"></span><span class="obody"><span class="omain">Reading/Writing &#8212; absorbs best through text</span><span class="oex">Would rather read the chapter than hear it explained. Takes detailed notes unprompted. Writes stories for fun. &#8220;Let me look it up&#8221; is a default response to any question. Strong preference for books over videos or discussions.</span></span></label></div>
+      </div>
+    </div>
+    <div class="field-block">
+      <label class="field-lbl">Strongest intelligence area (Howard Gardner)</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="intel" id="i1" value="logmath"><label class="olbl" for="i1"><span class="ochk"></span><span class="obody"><span class="omain">Logical-Mathematical &#8212; numbers, patterns, systems</span><span class="oex">Figures out the unspoken rules of a board game in one round. Sees patterns in number sequences before the lesson explains them. Organizes toys by size or category spontaneously.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="intel" id="i2" value="linguistic"><label class="olbl" for="i2"><span class="ochk"></span><span class="obody"><span class="omain">Linguistic &#8212; stories, words, language play</span><span class="oex">Has been &#8220;writing books&#8221; since age 4. Picks up vocabulary and grammar in new languages quickly. Loves wordplay, puns, and poetry. Can argue any side of a debate convincingly within minutes.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="intel" id="i3" value="musical"><label class="olbl" for="i3"><span class="ochk"></span><span class="obody"><span class="omain">Musical &#8212; rhythm, pitch, pattern in sound</span><span class="oex">Memorizes song lyrics after two listens. Taps rhythms on every surface constantly. Learns vocabulary through chanting and songs faster than any other method. Hums quietly during all solo work.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="intel" id="i4" value="spatial"><label class="olbl" for="i4"><span class="ochk"></span><span class="obody"><span class="omain">Spatial &#8212; maps, building, design, visual art</span><span class="oex">Built an accurate floor plan of the house at age 6. Reads maps and atlases for fun. Architecture, origami, and 3D puzzles hold attention for hours. Thinks and plans in three dimensions.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="intel" id="i5" value="bodily"><label class="olbl" for="i5"><span class="ochk"></span><span class="obody"><span class="omain">Bodily-Kinesthetic &#8212; sports, crafts, physical skill</span><span class="oex">Learned to ride a bike in 20 minutes. Excels at sports, dance, or martial arts. Fine motor control is exceptional &#8212; loves clay, needlework, or woodworking. Abstract ideas only become real once made physical.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="intel" id="i6" value="naturalist"><label class="olbl" for="i6"><span class="ochk"></span><span class="obody"><span class="omain">Naturalist &#8212; animals, plants, systems, the outdoors</span><span class="oex">Knows 30 bird species by sight. Keeps a nature journal without prompting. The outdoors is the real classroom &#8212; every walk becomes a science investigation. Cares deeply about living things and ecosystems.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="intel" id="i7" value="interpersonal"><label class="olbl" for="i7"><span class="ochk"></span><span class="obody"><span class="omain">Interpersonal &#8212; leadership, empathy, reading people</span><span class="oex">Mediates friend conflicts at age 7. Notices when an adult is sad before anyone else in the room does. Naturally organizes other children into games and projects. Learns best through dialogue and cooperative work.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="intel" id="i8" value="intrapersonal"><label class="olbl" for="i8"><span class="ochk"></span><span class="obody"><span class="omain">Intrapersonal &#8212; self-reflection, deep inner thinking</span><span class="oex">Keeps a personal journal voluntarily. Asks &#8220;why do I feel this way?&#8221; questions. Needs alone time to process intense experiences. Independent projects fueled by inner curiosity consistently produce the best work.</span></span></label></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="step" id="step5">
+    <div class="step-icon">&#127758;</div>
+    <h2 class="step-title">Language &amp; multilingual goals</h2>
+    <p class="step-desc">Your language context shapes literacy sequencing and the multilingual tools we recommend.</p>
+    <div class="field-block">
+      <label class="field-lbl" for="homeLang">Primary home language(s)</label>
+      <div class="field-hint">e.g. English &amp; Vietnamese, Spanish &amp; English, French only&#8230;</div>
+      <input class="txt-inp" id="homeLang" type="text" placeholder="Enter your home language(s)">
+    </div>
+    <div class="field-block">
+      <label class="field-lbl">Languages being actively developed</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="langCount" id="lc1" value="1"><label class="olbl" for="lc1"><span class="ochk"></span><span class="obody"><span class="omain">One language only</span><span class="oex">All instruction, reading, and daily conversation happen in a single language. No current plans to add another language formally.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="langCount" id="lc2" value="2"><label class="olbl" for="lc2"><span class="ochk"></span><span class="obody"><span class="omain">Two languages (bilingual)</span><span class="oex">Two languages are actively spoken at home or used in instruction &#8212; e.g. English at school, Vietnamese with grandparents, or Spanish immersion plus English literacy.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="langCount" id="lc3" value="3"><label class="olbl" for="lc3"><span class="ochk"></span><span class="obody"><span class="omain">Three or more languages (multilingual)</span><span class="oex">The child regularly hears and uses three or more languages &#8212; home language, community language, heritage or faith language, and school language. Full multilingual identity is the goal.</span></span></label></div>
+      </div>
+    </div>
+    <div class="field-block">
+      <label class="field-lbl">Biliteracy goal (reading and writing in multiple languages)</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="biliteracy" id="bl1" value="full"><label class="olbl" for="bl1"><span class="ochk"></span><span class="obody"><span class="omain">Full academic biliteracy &#8212; fluent reading and writing in all languages</span><span class="oex">Goal: the child writes essays, reads literature, and does academic work equally in 2 or more languages. Requires dedicated literacy blocks in each language from early elementary onward.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="biliteracy" id="bl2" value="oral"><label class="olbl" for="bl2"><span class="ochk"></span><span class="obody"><span class="omain">Oral fluency plus basic literacy in additional language(s)</span><span class="oex">Fluent conversation and family communication is the primary goal. Reading in the heritage language is a bonus, not the center of the curriculum plan.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="biliteracy" id="bl3" value="single"><label class="olbl" for="bl3"><span class="ochk"></span><span class="obody"><span class="omain">Deep academic literacy in one language only</span><span class="oex">One language (usually English) will carry all academic work. Other languages are maintained conversationally but not developed for academic writing or formal study.</span></span></label></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 6 -->
+  <section class="step" id="step6">
+    <div class="step-icon">&#10013;</div>
+    <h2 class="step-title">Faith &amp; values formation</h2>
+    <p class="step-desc">How central should faith be in the daily curriculum &#8212; not just in character, but in the actual academic content?</p>
+    <div class="field-block">
+      <label class="field-lbl">Level of faith integration in academics</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="faith" id="f1" value="full"><label class="olbl" for="f1"><span class="ochk"></span><span class="obody"><span class="omain">Fully integrated &#8212; Scripture woven through every subject</span><span class="oex">History is taught as God&#39;s redemptive story. Science opens with creation theology. Grammar uses Bible verses as model sentences. Character formation is inseparable from every lesson. Examples: Abeka, Bob Jones University Press, Classical Conversations, Tapestry of Grace.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="faith" id="f2" value="parallel"><label class="olbl" for="f2"><span class="ochk"></span><span class="obody"><span class="omain">Parallel &#8212; daily Bible or devotion time alongside strong secular academics</span><span class="oex">Morning devotions, catechism, or Bible study runs as a dedicated block alongside rigorous secular or classical materials. Faith and academics are both strong &#8212; taught in distinct, intentional time slots. Examples: Veritas Press + Singapore Math, Charlotte Mason + Scripture memory.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="faith" id="f3" value="values"><label class="olbl" for="f3"><span class="ochk"></span><span class="obody"><span class="omain">Values-grounded &#8212; ethics and character, not explicit doctrine in textbooks</span><span class="oex">Faith shapes the culture and moral framework of the home, but curriculum materials are selected for academic strength regardless of religious affiliation. No doctrinal content in textbooks &#8212; faith lives in the family, not the curriculum.</span></span></label></div>
+      </div>
+    </div>
+    <div class="field-block">
+      <label class="field-lbl" for="faithTrad">Faith tradition (optional)</label>
+      <div class="field-hint">e.g. Catholic, Protestant Evangelical, Orthodox Christian, Jewish, Muslim, non-denominational&#8230;</div>
+      <input class="txt-inp" id="faithTrad" type="text" placeholder="Your faith tradition">
+    </div>
+  </section>
+
+  <!-- STEP 7 -->
+  <section class="step" id="step7">
+    <div class="step-icon">&#128105;&#8205;&#127979;</div>
+    <h2 class="step-title">Your teaching style &amp; capacity</h2>
+    <p class="step-desc">The best curriculum is one you will genuinely enjoy teaching. There is no wrong answer here.</p>
+    <div class="field-block">
+      <label class="field-lbl">Your natural teaching style</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="teachStyle" id="ts1" value="scripted"><label class="olbl" for="ts1"><span class="ochk"></span><span class="obody"><span class="omain">Scripted and structured &#8212; you follow a clear plan each day</span><span class="oex">You feel most confident opening a teacher&#39;s manual and knowing exactly what to say next. You sit down Monday morning with the week&#39;s full sequence ready. Deviations from the plan cause stress. You want the curriculum to tell you what to do.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="teachStyle" id="ts2" value="classical"><label class="olbl" for="ts2"><span class="ochk"></span><span class="obody"><span class="omain">Socratic and discussion-based &#8212; you love asking questions together</span><span class="oex">Your best teaching moments are when you and your child are both leaning in, wrestling with a hard idea together. You want a method that produces thinkers, not just test-passers. Reading the same book and debating it is your ideal lesson.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="teachStyle" id="ts3" value="facilitator"><label class="olbl" for="ts3"><span class="ochk"></span><span class="obody"><span class="omain">Facilitator and interest-led &#8212; you follow the child&#39;s curiosity</span><span class="oex">Your &#8220;lesson plan&#8221; changes completely when your child spots a bird nest outside and you spend two hours on ornithology instead. You believe learning follows fascination, and you are fully comfortable with that unpredictability.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="teachStyle" id="ts4" value="project"><label class="olbl" for="ts4"><span class="ochk"></span><span class="obody"><span class="omain">Project-based and creative &#8212; you think in themes and units</span><span class="oex">You instinctively plan around big ideas: a month-long ancient Egypt project integrating history, writing, art, and math. You assess through portfolios and presentations, not worksheets. The project is the lesson.</span></span></label></div>
+      </div>
+    </div>
+    <div class="field-block">
+      <label class="field-lbl">Daily teaching time available</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="time" id="t1" value="short"><label class="olbl" for="t1"><span class="ochk"></span><span class="obody"><span class="omain">1 to 2 hours of active instruction per day</span><span class="oex">You work part-time, have multiple children, or have a household that limits direct teaching time. You need a curriculum that works in short, focused blocks with significant independent practice built in.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="time" id="t2" value="medium"><label class="olbl" for="t2"><span class="ochk"></span><span class="obody"><span class="omain">2 to 4 hours of instruction per day</span><span class="oex">A solid half-to-full school morning is available. You can cover core subjects deeply and add enrichment. This is the standard range for most full homeschool families with one or two children.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="time" id="t3" value="full"><label class="olbl" for="t3"><span class="ochk"></span><span class="obody"><span class="omain">4 or more hours &#8212; full school day, multiple subjects</span><span class="oex">This is your full-time occupation. You can implement a comprehensive program: multiple languages, multiple literature-rich subjects, arts, physical education, and extracurriculars all in one day.</span></span></label></div>
+      </div>
+    </div>
+    <div class="field-block">
+      <label class="field-lbl">Annual curriculum budget</label>
+      <div class="opts">
+        <div class="ocard"><input type="radio" name="budget" id="b1" value="low"><label class="olbl" for="b1"><span class="ochk"></span><span class="obody"><span class="omain">Under $300 per year</span><span class="oex">Library cards, free online resources, used books, and low-cost printables are the foundation. Curriculum must be affordable or free to be sustainable long-term.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="budget" id="b2" value="mid"><label class="olbl" for="b2"><span class="ochk"></span><span class="obody"><span class="omain">$300 to $800 per year</span><span class="oex">Room for a packaged curriculum or a curated mix of quality resources. Can invest in a few well-reviewed programs without stretching the household budget.</span></span></label></div>
+        <div class="ocard"><input type="radio" name="budget" id="b3" value="high"><label class="olbl" for="b3"><span class="ochk"></span><span class="obody"><span class="omain">$800 or more per year</span><span class="oex">Comprehensive programs, co-op memberships, online classes, tutors, and enrichment materials are all within reach. Education is a top household investment.</span></span></label></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 8 -->
+  <section class="step" id="step8">
+    <div class="step-icon">&#127919;</div>
+    <h2 class="step-title">Goals &amp; special considerations</h2>
+    <p class="step-desc">Select all that apply in each section below.</p>
+    <div class="field-block">
+      <label class="field-lbl">Primary outcomes for this child (select all that apply)</label>
+      <div class="opts">
+        <div class="ocard"><input type="checkbox" name="goals" id="go1" value="college"><label class="olbl" for="go1"><span class="ochk"></span><span class="obody"><span class="omain">College and academic excellence</span><span class="oex">Preparation for competitive university admissions, standardized tests, and rigorous academic writing from the early years.</span></span></label></div>
+        <div class="ocard"><input type="checkbox" name="goals" id="go2" value="global"><label class="olbl" for="go2"><span class="ochk"></span><span class="obody"><span class="omain">Global citizen and cultural fluency</span><span class="oex">Comfortable in multiple cultures, languages, and worldviews. Able to work, serve, and lead across national and cultural borders as a natural part of adult life.</span></span></label></div>
+        <div class="ocard"><input type="checkbox" name="goals" id="go3" value="faith"><label class="olbl" for="go3"><span class="ochk"></span><span class="obody"><span class="omain">Faith leader and servant heart</span><span class="oex">Deeply formed character, biblical or theological literacy, and a sense of calling to serve community and world. Who they become matters more than what credential they earn.</span></span></label></div>
+        <div class="ocard"><input type="checkbox" name="goals" id="go4" value="stem"><label class="olbl" for="go4"><span class="ochk"></span><span class="obody"><span class="omain">STEM and analytical thinking</span><span class="oex">Strong quantitative reasoning, scientific method, logic, and coding skills developed intentionally from the early years through secondary.</span></span></label></div>
+        <div class="ocard"><input type="checkbox" name="goals" id="go5" value="arts"><label class="olbl" for="go5"><span class="ochk"></span><span class="obody"><span class="omain">Arts, music, and creative expression</span><span class="oex">Rich aesthetic education &#8212; visual art, music, drama, creative writing &#8212; treated as core subjects with the same weight as math or language arts.</span></span></label></div>
+        <div class="ocard"><input type="checkbox" name="goals" id="go6" value="entrepreneur"><label class="olbl" for="go6"><span class="ochk"></span><span class="obody"><span class="omain">Entrepreneurship and real-world skills</span><span class="oex">Financial literacy, leadership, project management, and the confidence and competence to build something from nothing &#8212; starting in childhood.</span></span></label></div>
+        <div class="ocard"><input type="checkbox" name="goals" id="go7" value="character"><label class="olbl" for="go7"><span class="ochk"></span><span class="obody"><span class="omain">Character and virtue formation above all</span><span class="oex">Courage, integrity, empathy, and perseverance matter more than any academic credential. The curriculum must center who this child is becoming, not only what they know.</span></span></label></div>
+      </div>
+    </div>
+    <div class="field-block">
+      <label class="field-lbl">Special learning considerations (select all that apply)</label>
+      <div class="opts">
+        <div class="ocard"><input type="checkbox" name="special" id="sp0" value="none"><label class="olbl" for="sp0"><span class="ochk"></span><span class="obody"><span class="omain">No identified special considerations</span></span></label></div>
+        <div class="ocard"><input type="checkbox" name="special" id="sp1" value="gifted"><label class="olbl" for="sp1"><span class="ochk"></span><span class="obody"><span class="omain">Gifted or highly capable</span><span class="oex">Learned to read independently at age 4. Finishes grade-level work in half the time and then acts out from boredom. Asks &#8220;why&#8221; questions that stump adults. Standard pacing feels like waiting in traffic &#8212; the curriculum must be 1 to 2 levels ahead.</span></span></label></div>
+        <div class="ocard"><input type="checkbox" name="special" id="sp2" value="adhd"><label class="olbl" for="sp2"><span class="ochk"></span><span class="obody"><span class="omain">ADHD and executive function differences</span><span class="oex">Can hyperfocus for 3 hours on a passion project but cannot complete a 10-minute worksheet. Loses the pencil, forgets the assignment, starts 3 projects and finishes none. The challenge is starting and transitioning, not just staying on task.</span></span></label></div>
+        <div class="ocard"><input type="checkbox" name="special" id="sp3" value="dyslexia"><label class="olbl" for="sp3"><span class="ochk"></span><span class="obody"><span class="omain">Dyslexia and reading or language processing differences</span><span class="oex">Brilliant oral narration but writes 3 sentences in the time peers write a paragraph. Letters reverse or words move on the page. Standard phonics instruction has not clicked. Spelling feels impossible despite repeated daily effort.</span></span></label></div>
+        <div class="ocard"><input type="checkbox" name="special" id="sp4" value="asd"><label class="olbl" for="sp4"><span class="ochk"></span><span class="obody"><span class="omain">Autism Spectrum traits</span><span class="oex">Deep encyclopedic knowledge of one or two subjects. Open-ended tasks cause shutdown (&#8220;write whatever you want&#8221; is terrifying). Sensory sensitivities affect the learning environment. Social and emotional pragmatics need explicit, patient teaching.</span></span></label></div>
+        <div class="ocard"><input type="checkbox" name="special" id="sp5" value="2e"><label class="olbl" for="sp5"><span class="ochk"></span><span class="obody"><span class="omain">Twice-exceptional (2e) &#8212; gifted and learning differently</span><span class="oex">Reads at a high school level but cannot tie their shoes or write legibly at the same age. Solves complex logic puzzles but melts down during routine transitions. The gap between intellectual ability and execution is wide and confusing for everyone involved.</span></span></label></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="nav">
+    <button class="btn-back" id="prevBtn" style="display:none">&#8592; Back</button>
+    <button class="btn-next" id="nextBtn">Continue &#8594;</button>
+  </div>
+</div>
+</div>
+
+<!-- RESULTS -->
+<div id="results">
+<div class="wrap">
+  <div class="res-hero">
+    <div class="brand-hero" style="margin-bottom: 1.5rem;">
+      <img src="worldseed-logo.jpg" class="brand-hero-img" alt="WorldSeed Logo">
+    </div>
+    <h2 id="resTitle">Your Child&#39;s Curriculum Profile</h2>
+    <p id="resSubtitle">A personalized recommendation based on your responses.</p>
+  </div>
+  <h3 class="sec-head">Child Snapshot</h3>
+  <div class="chips" id="chips"></div>
+  <h3 class="sec-head">Educator&#39;s Summary</h3>
+  <div class="summary-box" id="summaryBox"></div>
+  <h3 class="sec-head">Top Curriculum Matches</h3>
+  <div class="cur-cards" id="ccards"></div>
+  <h3 class="sec-head">Daily Execution Plan</h3>
+  <div class="exec-grid" id="egrid"></div>
+  <h3 class="sec-head">Recommended Teaching Aids &amp; Supplies</h3>
+  <div class="aid-grid" id="agrid"></div>
+
+  <div class="email-box">
+    <div class="email-title">&#9993; Email Your Report</div>
+    <p class="email-desc">Receive a copy of this curriculum profile, snapshot, and execution plan directly in your inbox.</p>
+    <div class="email-form">
+      <input type="email" id="userEmail" class="txt-inp email-input" placeholder="Enter your email address" required>
+      <button class="btn-email" id="emailBtn">Email Report &rarr;</button>
+    </div>
+    <div class="email-status" id="emailStatus"></div>
+  </div>
+
+  <div class="res-actions">
+    <button class="btn-print" id="printBtn">&#128424; Print / Save PDF</button>
+    <button class="btn-restart" id="restartBtn">&#8592; Start New Assessment</button>
+  </div>
+</div>
+</div>
+
+<script>
+window.addEventListener('load', function() {
+
+  // Theme
+  var themeBtn = document.getElementById('themeBtn');
+  var root = document.documentElement;
+  var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  themeBtn.addEventListener('click', function() {
+    isDark = !isDark;
+    root.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    themeBtn.innerHTML = isDark
+      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  });
+
+  var cur = 1, total = 8;
+
+  function gv(n) { var e = document.querySelector('input[name="'+n+'"]:checked'); return e ? e.value : ''; }
+  function gc(n) { return Array.from(document.querySelectorAll('input[name="'+n+'"]:checked')).map(function(e){return e.value;}); }
+  function gf(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+
+  function ui() {
+    var pct = Math.round((cur/total)*100);
+    document.getElementById('progBar').style.width = pct+'%';
+    document.getElementById('stepInd').textContent = 'Step '+cur+' of '+total;
+    document.getElementById('stepPct').textContent = pct+'%';
+    document.getElementById('prevBtn').style.display = cur > 1 ? 'inline-flex' : 'none';
+    document.getElementById('nextBtn').textContent = cur === total ? 'Generate Report →' : 'Continue →';
+  }
+
+  function next() {
+    if (cur < total) {
+      document.getElementById('step'+cur).classList.remove('active');
+      cur++;
+      document.getElementById('step'+cur).classList.add('active');
+      ui();
+      window.scrollTo({top:0,behavior:'smooth'});
+    } else { report(); }
+  }
+  function prev() {
+    if (cur > 1) {
+      document.getElementById('step'+cur).classList.remove('active');
+      cur--;
+      document.getElementById('step'+cur).classList.add('active');
+      ui();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  }
+
+  document.getElementById('nextBtn').addEventListener('click', next);
+  document.getElementById('prevBtn').addEventListener('click', prev);
+  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+  document.getElementById('emailBtn').addEventListener('click', sendEmailReport);
+  document.getElementById('restartBtn').addEventListener('click', function(){
+    document.getElementById('results').style.display='none';
+    document.getElementById('assessment').style.display='block';
+    document.querySelectorAll('.step').forEach(function(s){s.classList.remove('active');});
+    cur=1; document.getElementById('step1').classList.add('active'); ui();
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  function sendEmailReport() {
+    var emailInput = document.getElementById('userEmail');
+    var statusDiv = document.getElementById('emailStatus');
+    var emailVal = emailInput.value.trim();
+    
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailVal || !emailRegex.test(emailVal)) {
+      statusDiv.textContent = "Please enter a valid email address.";
+      statusDiv.className = "email-status error";
+      return;
+    }
+    
+    statusDiv.textContent = "Preparing email...";
+    statusDiv.className = "email-status";
+    
+    var name = gf('childName')||'Your child';
+    var summary = document.getElementById('summaryBox').textContent;
+    
+    var matches = [];
+    document.querySelectorAll('#ccards .ccard').forEach(function(card) {
+      var name = card.querySelector('.cname').textContent;
+      var score = card.querySelector('.cscore').textContent;
+      var programs = card.querySelector('.cprog').textContent;
+      matches.push("- " + name + " (" + score + ")\n  " + programs);
+    });
+    
+    var plan = [];
+    document.querySelectorAll('#egrid .eitem').forEach(function(item) {
+      var label = item.querySelector('.elbl').textContent;
+      var value = item.querySelector('.eval').textContent;
+      plan.push("- " + label + ": " + value);
+    });
+    
+    var subject = encodeURIComponent(name + "'s WorldSeed Curriculum Fit Assessment Results");
+    var bodyText = "Hi there,\n\nHere are the results of the WorldSeed Curriculum Fit Assessment for " + name + ":\n\n" +
+      "--- SNAPSHOT ---\n" + summary + "\n\n" +
+      "--- TOP MATCHES ---\n" + matches.join("\n") + "\n\n" +
+      "--- DAILY EXECUTION PLAN ---\n" + plan.join("\n") + "\n\n" +
+      "Thank you for using the WorldSeed Curriculum Fit Assessment!";
+      
+    var body = encodeURIComponent(bodyText);
+    var mailtoLink = "mailto:" + emailVal + "?subject=" + subject + "&body=" + body;
+    
+    // --- OPTION: Background Email sending via Web3Forms (Silent) ---
+    // If you want the email to send silently in the background instead of opening the user's email client:
+    // 1. Get a free Access Key at https://web3forms.com
+    // 2. Set status to "Sending email..."
+    // 3. Uncomment this block and replace YOUR_ACCESS_KEY_HERE:
+    /*
+    statusDiv.textContent = "Sending email...";
+    var web3AccessKey = "YOUR_ACCESS_KEY_HERE"; 
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: web3AccessKey,
+        subject: name + "'s WorldSeed Curriculum Fit Assessment Results",
+        email: emailVal,
+        message: bodyText
+      })
+    })
+    .then(function(res) {
+      if (res.ok) {
+        statusDiv.textContent = "Email sent successfully in the background!";
+        statusDiv.className = "email-status success";
+      } else {
+        throw new Error("Failed to send");
+      }
+    })
+    .catch(function(err) {
+      window.location.href = mailtoLink;
+      statusDiv.textContent = "API error. Opened default email client instead.";
+      statusDiv.className = "email-status error";
+    });
+    return;
+    */
+    
+    window.location.href = mailtoLink;
+    statusDiv.textContent = "Opened your default email client. Send the email from there!";
+    statusDiv.className = "email-status success";
+  }
+
+  function report() {
+    var nm = gf('childName')||'Your child';
+    var age=gv('ageGroup'), gen=gv('gender'), energy=gv('energy'), adapt=gv('adaptability');
+    var persist=gv('persistence'), social=gv('social'), mod=gv('modality'), intel=gv('intel');
+    var hl=gf('homeLang')||'Not specified', lc=gv('langCount'), bl=gv('biliteracy');
+    var faith=gv('faith'), ft=gf('faithTrad'), ts=gv('teachStyle'), tm=gv('time'), bud=gv('budget');
+    var goals=gc('goals'), sp=gc('special');
+
+    var aM={early:'Ages 3–6',lower:'Ages 7–10',upper:'Ages 11–13',secondary:'Ages 14–17'};
+    var eM={high:'High Energy',medium:'Moderate Energy',low:'Calm/Reflective'};
+    var adM={high:'Highly Adaptable',medium:'Needs Transition Warning',low:'Needs Strong Routine'};
+    var pM={high:'High Persistence',medium:'Moderate Persistence',low:'Needs Short Tasks'};
+    var sM={social:'Group Learner',mixed:'Balanced Social',solo:'Solo Learner'};
+    var mM={visual:'Visual Learner',auditory:'Auditory Learner',kinesthetic:'Kinesthetic Learner',reading:'Read/Write Learner'};
+    var iM={logmath:'Logical-Math',linguistic:'Linguistic',musical:'Musical',spatial:'Spatial',bodily:'Bodily-Kinesthetic',naturalist:'Naturalist',interpersonal:'Interpersonal',intrapersonal:'Intrapersonal'};
+    var lcM={'1':'Monolingual','2':'Bilingual','3':'Multilingual 3+'};
+    var fM={full:'Fully Faith-Integrated',parallel:'Parallel Faith + Academics',values:'Values-Grounded'};
+    var tsM={scripted:'Structured Teacher',classical:'Socratic Teacher',facilitator:'Facilitator',project:'Project-Based Teacher'};
+    var tmM={short:'1–2 hrs/day',medium:'2–4 hrs/day',full:'4+ hrs/day'};
+    var budM={low:'Budget Under $300',mid:'Budget $300–$800',high:'Budget $800+'};
+
+    document.getElementById('resTitle').textContent = nm+'’s Curriculum Profile';
+    document.getElementById('resSubtitle').textContent = 'A personalized recommendation for '+nm+' based on temperament, learning style, faith formation goals, and your teaching capacity.';
+
+    var chipsD = [
+      ['&#127807;', aM[age]||age],['&#9889;',eM[energy]||energy],['&#128260;',adM[adapt]||adapt],
+      ['&#128170;',pM[persist]||persist],['&#128101;',sM[social]||social],['&#127912;',mM[mod]||mod],
+      ['&#129504;',iM[intel]||intel],['&#127757;',lcM[lc]||lc],['&#128218;','Home: '+hl],
+      ['&#10013;',fM[faith]||faith],['&#128105;&#8205;&#127979;',tsM[ts]||ts],
+      ['&#9201;',tmM[tm]||tm],['&#128176;',budM[bud]||bud]
+    ];
+    if(ft) chipsD.push(['&#9962;',ft]);
+    if(sp.length&&sp[0]!=='none'){
+      var spN={gifted:'Gifted',adhd:'ADHD',dyslexia:'Dyslexia',asd:'ASD','2e':'Twice-Exceptional'};
+      chipsD.push(['&#128155;',sp.map(function(s){return spN[s]||s;}).join(', ')]);
+    }
+    document.getElementById('chips').innerHTML = chipsD.map(function(c){return '<span class="chip">'+c[0]+' '+c[1]+'</span>';}).join('');
+
+    var spSumm='';
+    if(sp.length&&sp[0]!=='none'){
+      var spNN=sp.filter(function(s){return s!=='none';}).map(function(s){return({gifted:'giftedness',adhd:'ADHD/executive function differences',dyslexia:'dyslexia/reading differences',asd:'autism spectrum traits','2e':'twice-exceptionality'})[s]||s;});
+      spSumm=' Special attention is recommended for '+spNN.join(' and ')+'.';
+    }
+    var gSumm=goals.length?' Primary outcomes include '+goals.map(function(g){return({college:'academic excellence',global:'global citizenship',faith:'faith leadership',stem:'STEM thinking',arts:'creative arts',entrepreneur:'entrepreneurship',character:'character formation'})[g]||g;}).join(', ').replace(/,([^,]*)$/,' and$1')+'.':'';
+    document.getElementById('summaryBox').textContent = nm+' is a '+(aM[age]||age).toLowerCase()+' '+(gen==='girl'?'girl':gen==='boy'?'boy':'child')+' with '+(eM[energy]||'moderate energy').toLowerCase()+' and a '+(sM[social]||'balanced social').toLowerCase()+' learning orientation. '+(mM[mod]?nm+' learns primarily as a '+(mM[mod]||'').toLowerCase()+' with strong '+(iM[intel]||'general').toLowerCase()+' intelligence.':'')+' The home language is '+hl+' with a '+((lcM[lc]||'monolingual').toLowerCase())+' development goal. Faith is '+(fM[faith]||'values-grounded').toLowerCase()+'. You are a '+(tsM[ts]||'flexible teacher').toLowerCase()+' with '+(tmM[tm]||'moderate time').toLowerCase()+' and a '+(budM[bud]||'moderate budget').toLowerCase()+'.'+gSumm+spSumm;
+
+    var curricula=[
+      {name:'Classical / Trivium',desc:'Grammar to Logic to Rhetoric — the oldest and most academically rigorous model. Builds a permanent framework for all learning. Explicitly compatible with Christian faith formation. Produces outstanding writers, speakers, and independent thinkers.',tags:['Rigorous','Discussion-based','Faith-compatible','Literature-rich'],programs:'Classical Conversations, Veritas Press, Well-Trained Mind, Memoria Press',score:50},
+      {name:'Charlotte Mason',desc:'Living books, narration, nature journals, and short focused lessons. Rejects dry textbooks in favor of rich language and real experiences. Natural fit for multilingual learners and faith-centered families.',tags:['Gentle','Literature-rich','Nature-based','Narration'],programs:'Ambleside Online (free), Simply Charlotte Mason, A Mind in the Bloom',score:50},
+      {name:'Montessori',desc:'Child-led exploration with carefully prepared environments and self-correcting materials. Strong executive function and intrinsic motivation outcomes. Exceptional for multilingual development, gifted children, and kinesthetic learners.',tags:['Child-led','Hands-on','Independence','Multi-age'],programs:'Keys of the World, Montessori for Home, Waseca Biomes, Cultivating Dharma',score:50},
+      {name:'International Baccalaureate (IB)',desc:'Gold standard for global secondary education. Inquiry-based, internationally recognized, multilingual by design. Produces globally competent citizens recognized by universities worldwide. Best for ages 11–17.',tags:['Global citizenship','Inquiry-based','University-prep','Multilingual'],programs:'IB Diploma Programme, IB Middle Years, IB PYP, Pamoja online IB courses',score:50},
+      {name:'Reggio Emilia',desc:'Project-based, community-centered, arts-integrated early childhood philosophy. The child is treated as a capable researcher and co-designer of learning. Best for ages 3–8.',tags:['Project-based','Arts-integrated','Community-centered','Ages 3–8'],programs:'Reggio-inspired co-ops, Fairy Dust Teaching, Janet Lansbury philosophy',score:50},
+      {name:'Waldorf / Steiner',desc:'Developmental, rhythmic, and arts-immersive. No formal academics before age 7. Rich in storytelling, music, crafts, and seasonal rhythm. Pairs beautifully with musical and naturalist intelligence profiles.',tags:['Developmental','Arts-immersive','Rhythmic','Whole-child'],programs:'Christopherus Homeschool, Waldorf Essentials, A Little Garden Flower',score:50},
+      {name:'Project-Based Learning (PBL)',desc:'Real-world projects drive all learning. Students investigate authentic problems, produce real products, and present to real audiences. Exceptional for entrepreneurs, naturalists, and gifted-ADHD profiles where traditional pacing fails.',tags:['Real-world','Student-driven','Multi-disciplinary','Entrepreneurial'],programs:'PBLWorks, Big Life Journal, Acton Academy model, Tinkering Labs',score:50},
+      {name:'Singapore / Mastery Math + Classical',desc:'Best-in-class mathematics (Singapore) fused with classical language arts and history. PISA top performer. Produces rigorous analytical thinkers. Excellent for STEM-focused families who also want strong humanities.',tags:['STEM-strong','Mastery-based','Rigorous','Analytical'],programs:'Primary Mathematics (Marshall Cavendish), Math in Focus, Beast Academy',score:50}
+    ];
+
+    curricula.forEach(function(c){
+      var s=c.score, n=c.name;
+      if(age==='early'){if(n.includes('Montessori')||n.includes('Reggio')||n.includes('Waldorf'))s+=25;if(n.includes('IB'))s-=20;}
+      if(age==='lower'){if(n.includes('Classical')||n.includes('Charlotte'))s+=20;if(n.includes('Montessori'))s+=10;}
+      if(age==='upper'||age==='secondary'){if(n.includes('Classical')||n.includes('IB'))s+=20;if(n.includes('Reggio'))s-=15;}
+      if(energy==='high'){if(n.includes('Montessori')||n.includes('PBL')||n.includes('Waldorf'))s+=15;}
+      if(energy==='low'){if(n.includes('Classical')||n.includes('Charlotte')||n.includes('Singapore'))s+=10;}
+      if(persist==='low'){if(n.includes('Montessori')||n.includes('Charlotte'))s+=15;if(n.includes('Classical'))s-=5;}
+      if(persist==='high'){if(n.includes('Classical')||n.includes('Singapore'))s+=15;}
+      if(social==='social'){if(n.includes('Reggio')||n.includes('PBL')||n.includes('IB'))s+=15;}
+      if(social==='solo'){if(n.includes('Montessori')||n.includes('Charlotte')||n.includes('Classical'))s+=10;}
+      if(mod==='kinesthetic'){if(n.includes('Montessori')||n.includes('PBL')||n.includes('Waldorf'))s+=20;}
+      if(mod==='auditory'){if(n.includes('Classical')||n.includes('Charlotte')||n.includes('Waldorf'))s+=15;}
+      if(mod==='visual'){if(n.includes('Reggio')||n.includes('Waldorf')||n.includes('Singapore'))s+=10;}
+      if(mod==='reading'){if(n.includes('Classical')||n.includes('Charlotte'))s+=20;}
+      if(intel==='musical'){if(n.includes('Waldorf'))s+=25;}
+      if(intel==='naturalist'){if(n.includes('Charlotte')||n.includes('Waldorf')||n.includes('PBL'))s+=20;}
+      if(intel==='logmath'){if(n.includes('Singapore')||n.includes('Classical'))s+=20;}
+      if(intel==='linguistic'){if(n.includes('Classical')||n.includes('Charlotte'))s+=20;}
+      if(intel==='spatial'||intel==='bodily'){if(n.includes('Montessori')||n.includes('PBL')||n.includes('Waldorf'))s+=15;}
+      if(intel==='interpersonal'){if(n.includes('Reggio')||n.includes('IB'))s+=15;}
+      if(lc==='3'||lc==='2'){if(n.includes('IB')||n.includes('Montessori'))s+=15;if(n.includes('Charlotte'))s+=10;}
+      if(faith==='full'){if(n.includes('Classical'))s+=25;if(n.includes('Charlotte'))s+=15;if(n.includes('IB')||n.includes('Reggio'))s-=10;}
+      if(faith==='parallel'){if(n.includes('Classical')||n.includes('Charlotte'))s+=15;}
+      if(faith==='values'){if(n.includes('Montessori')||n.includes('PBL'))s+=10;}
+      if(ts==='scripted'){if(n.includes('Classical')||n.includes('Singapore'))s+=15;if(n.includes('PBL')||n.includes('Montessori'))s-=10;}
+      if(ts==='classical'){if(n.includes('Classical')||n.includes('Charlotte'))s+=20;}
+      if(ts==='facilitator'){if(n.includes('Montessori')||n.includes('Charlotte')||n.includes('PBL'))s+=20;}
+      if(ts==='project'){if(n.includes('PBL')||n.includes('Reggio')||n.includes('IB'))s+=20;}
+      if(tm==='short'){if(n.includes('Charlotte')||n.includes('Montessori'))s+=15;if(n.includes('Classical'))s-=5;}
+      if(tm==='full'){if(n.includes('Classical')||n.includes('IB'))s+=15;}
+      if(bud==='low'){if(n.includes('Charlotte'))s+=20;if(n.includes('IB'))s-=15;}
+      if(bud==='high'){if(n.includes('IB')||n.includes('Classical'))s+=10;}
+      if(goals.includes('stem')){if(n.includes('Singapore')||n.includes('PBL'))s+=20;}
+      if(goals.includes('global')){if(n.includes('IB')||n.includes('Montessori'))s+=20;}
+      if(goals.includes('college')){if(n.includes('Classical')||n.includes('IB'))s+=15;}
+      if(goals.includes('arts')){if(n.includes('Waldorf')||n.includes('Reggio'))s+=20;}
+      if(goals.includes('entrepreneur')){if(n.includes('PBL')||n.includes('Montessori'))s+=20;}
+      if(goals.includes('faith')){if(n.includes('Classical'))s+=20;if(n.includes('Charlotte'))s+=10;}
+      if(goals.includes('character')){if(n.includes('Classical')||n.includes('Charlotte')||n.includes('Waldorf'))s+=15;}
+      if(sp.includes('adhd')){if(n.includes('Montessori')||n.includes('PBL'))s+=20;if(n.includes('Singapore'))s-=10;}
+      if(sp.includes('dyslexia')){if(n.includes('Charlotte')||n.includes('Waldorf'))s+=20;}
+      if(sp.includes('gifted')){if(n.includes('Classical')||n.includes('IB'))s+=20;if(n.includes('Montessori'))s+=15;}
+      if(sp.includes('asd')){if(n.includes('Montessori')||n.includes('Charlotte'))s+=15;}
+      if(sp.includes('2e')){if(n.includes('Montessori')||n.includes('Classical'))s+=15;}
+      c.score=s;
+    });
+
+    curricula.sort(function(a,b){return b.score-a.score;});
+    var mx=curricula[0].score;
+    var rl=['&#129351; Best Fit','&#129352; Strong Match','&#129353; Good Alternative','4th Option'];
+    document.getElementById('ccards').innerHTML=curricula.slice(0,4).map(function(c,i){
+      var pct=Math.min(100,Math.round((c.score/mx)*100));
+      return '<div class="ccard"><div class="crank">'+rl[i]+'</div><div class="cname">'+c.name+'</div><div class="cscore">Fit score: '+pct+'%</div><div class="cbar"><div class="cbar-fill" style="width:'+pct+'%"></div></div><div class="cdesc">'+c.desc+'</div><div class="ctags">'+c.tags.map(function(t){return'<span class="ctag">'+t+'</span>';}).join('')+'</div><div class="cprog"><strong>Programs:</strong> '+c.programs+'</div></div>';
+    }).join('');
+
+    var sl=tm==='short'?'20–30 min focused blocks':tm==='medium'?'30–45 min blocks':'45–60 min blocks';
+    var st=adapt==='low'?'Fixed schedule posted visually — same order every day':adapt==='medium'?'Consistent core sequence with 1–2 flexible slots':'Flexible daily rhythm guided by energy and interest';
+    var lp=lc==='3'?'30–45 min/day per language in rotating blocks':lc==='2'?'Alternate language of instruction daily or by subject':'Single-language immersion throughout';
+    var spad='Standard pacing';
+    if(sp.includes('adhd'))spad='Short tasks (10–15 min), visual timer, movement break every 20 min';
+    if(sp.includes('dyslexia'))spad='Orton-Gillingham or Wilson phonics; audiobooks for content delivery; oral narration over written output';
+    if(sp.includes('gifted'))spad='Accelerate 1–2 levels in strength areas; use Socratic seminars and independent deep projects';
+    if(sp.includes('2e'))spad='Accelerate content; reduce written output load; use voice-to-text and project-based assessment';
+    var dlv=mod==='auditory'?'Read-aloud, discussion, oral narration':mod==='kinesthetic'?'Hands-on projects, manipulatives, real-world tasks':mod==='visual'?'Visual maps, timelines, illustrated books, diagrams':'Independent reading, written narration, research projects';
+    var asmt=ts==='project'?'Portfolio + project presentations':ts==='classical'?'Oral recitation, essay, Socratic discussion':ts==='scripted'?'Weekly quizzes + written narration':'Observation notes + project portfolios';
+
+    document.getElementById('egrid').innerHTML=[
+      {l:'Session Length',v:sl,s:'Per subject block'},
+      {l:'Daily Structure',v:st,s:'Scheduling approach'},
+      {l:'Language Blocks',v:lp,s:hl},
+      {l:'Special Adaptations',v:spad,s:sp.filter(function(s){return s!=='none';}).join(', ')||'None identified'},
+      {l:'Delivery Style',v:dlv,s:(mM[mod]||'Mixed')},
+      {l:'Assessment',v:asmt,s:'How you measure progress'}
+    ].map(function(e){return'<div class="eitem"><div class="elbl">'+e.l+'</div><div class="eval">'+e.v+'</div><div class="esub">'+e.s+'</div></div>';}).join('');
+
+    var aids=[];
+    var core=age==='early'?['The Read-Aloud Handbook (Jim Trelease)','Before Five in a Row (Jane Claire Lambert)','Slow and Steady Get Me Ready','Five in a Row curriculum units']:age==='secondary'?['How to Read a Book (Adler & Van Doren)','The Elements of Style (Strunk & White)','Omnibus Curriculum (Veritas Press)','How to Write a Sentence (Stanley Fish)']:['The Well-Trained Mind (Susan Wise Bauer)','A Charlotte Mason Companion (Karen Andreola)','The Story of the World Vol. 1–4','Teaching the Trivium (Bluedorn)'];
+    aids.push({c:'&#128218; Core Books',items:core});
+
+    var lang=lc==='1'?['Duolingo for early language exposure','Power-Glide Language course','Rosetta Stone (heritage language add-on)']:['Transparent Language Online','Bilingual picture books (Lectorum/Leer Contigo)','Primary Phonics kits in each language','Pimsleur audio method for parent-led immersion','Mango Languages (free via library)'];
+    if(bl==='full')lang.push('Signet dual-language poetry anthologies');
+    aids.push({c:'&#127757; Multilingual Tools',items:lang});
+
+    var manip=mod==='kinesthetic'||energy==='high'?['Cuisenaire rods and base-10 blocks','Montessori sandpaper letters and moveable alphabet','Balance scale and measurement kit','Science experiment subscription (MEL Science)','Floor map puzzle (world geography)']:['Fraction tiles and pattern blocks','Snap Circuits junior STEM kit','Botley coding robot (ages 5–12)','Laminated timeline strip (history wall)'];
+    aids.push({c:'&#128295; Manipulatives & Hands-On',items:manip});
+
+    var arts=intel==='musical'?['Suzuki Method for violin or piano',"Alfred's Basic Piano Library Level 1",'Music Together family curriculum','Recorder Karate school program']:intel==='spatial'||goals.includes('arts')?['Oil pastels + watercolor set','Clay sculpting kit','Drawing on the Right Side of the Brain (Edwards)','Handcraft for the Homeschool (Waldorf arts guide)']:['Prismacolor colored pencils + sketchbook','How to Teach Art to Children (Frank)','Recorder + beginner sheet music','Nature journaling supplies'];
+    aids.push({c:'&#127912; Arts & Creative Expression',items:arts});
+
+    var fai=faith==='full'?['Abeka Bible curriculum','Classical Conversations memory work cards','Seeds Family Worship scripture song CDs','The Big Picture Story Bible (Preschool–Grade 3)']:faith==='parallel'?['Morning Time devotional basket',"The Ology: Ancient Truths (children's theology)",'Fighter Verses scripture memory app','C.S. Lewis’ Mere Christianity (teens)']:['The Jesus Storybook Bible','Catechism cards for young children','Faith and Culture reading list (Trevin Wax)','Virtue-based read-alouds list'];
+    aids.push({c:'&#10013; Faith Formation',items:fai});
+
+    var glob=goals.includes('global')?['Mango Languages (library free access)','UNESCO free world heritage teaching resources','MIA global citizenship curriculum','Skype a Scientist or global virtual exchange','Cultural recipe project (cooking as geography)']:["Children's Atlas of the World (DK)",'Around the World in 80 Days (abridged)','International pen pal program','Flag quiz cards and world geography games'];
+    aids.push({c:'&#127760; Global Citizenship',items:glob});
+
+    if(sp.filter(function(s){return s!=='none';}).length>0){
+      var spi=[];
+      if(sp.includes('adhd'))spi.push('Time Timer visual clock','Fidget tools kit','Move to Learn brain-break videos','Homework checklist pad with checkbox system');
+      if(sp.includes('dyslexia'))spi.push('Barton Reading & Spelling (Orton-Gillingham)','Learning Ally audiobook subscription','Slant board for writing support','BookShare.org free accessible library');
+      if(sp.includes('gifted'))spi.push('Art of Problem Solving (math enrichment)','Johns Hopkins CTY online courses','Renzulli Learning platform','Debate and Model UN preparation kits');
+      if(sp.includes('asd'))spi.push('Social Stories kits (Carol Gray)','Zones of Regulation curriculum','Weighted lap pad and sensory toolkit','Visual schedule builder');
+      if(sp.includes('2e'))spi.push('Twice-Exceptional Newsletter resource hub','Google Docs voice-to-text','Dragon Dictation app','IEP-at-Home planning guide for homeschoolers');
+      if(spi.length)aids.push({c:'&#128155; Special Needs Supports',items:spi});
+    }
+
+    document.getElementById('agrid').innerHTML=aids.map(function(a){return'<div class="acard"><div class="acat">'+a.c+'</div><ul class="alist">'+a.items.map(function(i){return'<li>'+i+'</li>';}).join('')+'</ul></div>';}).join('');
+
+    document.getElementById('assessment').style.display='none';
+    document.getElementById('results').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  ui();
+});
+</script>
+</body>
+</html>

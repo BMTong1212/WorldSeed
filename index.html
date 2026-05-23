@@ -603,27 +603,23 @@ window.addEventListener('load', function() {
     var body = encodeURIComponent(bodyText);
     var mailtoLink = "mailto:" + emailVal + "?subject=" + subject + "&body=" + body;
     
-    // --- OPTION: Background Email sending via Web3Forms (Silent) ---
-    // If you want the email to send silently in the background instead of opening the user's email client:
-    // 1. Get a free Access Key at https://web3forms.com
-    // 2. Set status to "Sending email..."
-    // 3. Uncomment this block and replace YOUR_ACCESS_KEY_HERE:
-    /*
     statusDiv.textContent = "Sending email...";
-    var web3AccessKey = "YOUR_ACCESS_KEY_HERE"; 
+    statusDiv.className = "email-status";
+    var web3AccessKey = "7605d354-6f89-452d-bcf9-d2bd8a60d085"; 
     fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({
         access_key: web3AccessKey,
         subject: name + "'s WorldSeed Curriculum Fit Assessment Results",
+        from_name: "WorldSeed Curriculum Assessment",
         email: emailVal,
         message: bodyText
       })
     })
     .then(function(res) {
       if (res.ok) {
-        statusDiv.textContent = "Email sent successfully in the background!";
+        statusDiv.textContent = "Email sent successfully! Check your inbox.";
         statusDiv.className = "email-status success";
       } else {
         throw new Error("Failed to send");
@@ -635,7 +631,6 @@ window.addEventListener('load', function() {
       statusDiv.className = "email-status error";
     });
     return;
-    */
     
     window.location.href = mailtoLink;
     statusDiv.textContent = "Opened your default email client. Send the email from there!";
